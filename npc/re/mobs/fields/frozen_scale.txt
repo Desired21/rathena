@@ -1,0 +1,30 @@
+//==================================================
+// jor_tail - Frozen Tail
+//==================================================
+jor_tail,0,0	monster	Shining Seaweed	21524,80,5000
+jor_tail,0,0	monster	Ice Gangu	21525,90,5000
+
+//==================================================
+// jor_back1  -  Frozen Scale Hills
+//==================================================
+jor_back1,0,0	monster	Shining Seaweed	21524,60,5000
+jor_back1,0,0	monster	Ice Gangu	21525,60,5000
+jor_back1,0,0	monster	Ice Straw	21523,80,5000
+
+//==================================================
+// jor_back2    Frozen Scale Plains
+//==================================================
+jor_back2,0,0	monster	Ice Gangu	21525,25,5000
+jor_back2,0,0	monster	Ice Straw	21523,35,5000
+jor_back2,0,0	monster	Unfrost Flower	21521,70,5000
+jor_back2,0,0	monster	Limacina	21520,70,5000
+
+//==================================================
+// jor_back3    Frozen Scale Glaciers
+//==================================================
+jor_back3,0,0	monster	Ice Gangu	21525,20,5000
+jor_back3,0,0	monster	Calmaring	21522,70,5000
+jor_back3,0,0	monster	Primitive Rgan	21526,30,5000
+jor_back3,0,0	monster	Lowest Rgan	21527,15,5000
+jor_back3,0,0	monster	Limacina	21520,70,5000
+jor_back3,0,0	monster	Ultra Limacina	21537,1,5000
