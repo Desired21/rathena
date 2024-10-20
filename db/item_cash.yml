@@ -1,0 +1,172 @@
+# This file is a part of rAthena.
+#   Copyright(C) 2022 rAthena Development Team
+#   https://rathena.org - https://github.com/rathena
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################
+# Item Cash Database
+###########################################################################
+#
+# Item Cash Settings
+#
+###########################################################################
+# - Tab                     Cash shop tab. Available tabs are New, Hot, Limited, Rental, Permanent, Scrolls, Consumables, Other, Sale.
+#   Items:                  List of possible items.
+#     - Item                Item name.
+#       Price               Item cost in cash points (#CASHPOINTS).
+###########################################################################
+
+Header:
+  Type: ITEM_CASH_DB
+  Version: 1
+
+Body:
+  - Tab: New
+    Items:
+     - Item: C_Spot_Light
+       Price: 500
+     - Item: C_Released_Ground
+       Price: 1000
+  - Tab: Hot
+    Items:
+     - Item: Lightning_Cloud
+       Price: 1000
+     - Item: Rain_Cloud
+       Price: 1000
+     - Item: C_Let_It_Snow
+       Price: 1000
+     - Item: C_Blossom_Fluttering
+       Price: 1000
+     - Item: C_Vampire_Hairband
+       Price: 1000
+     - Item: C_Angel_Fluttering
+       Price: 1000
+     - Item: C_Soulless_Wing
+       Price: 1000
+  - Tab: Limited
+    Items:
+     - Item: C_Evil_Druid_Cross
+       Price: 1000
+     - Item: C_Black_Strong_Hair
+       Price: 1000
+  - Tab: Rental
+    Items:
+     - Item: C_Wing_Of_Fly_1Day_Para
+       Price: 1000
+     - Item: C_Wing_Of_Fly_5Day_Box_
+       Price: 1000
+     - Item: C_Wing_Of_Fly_Box
+       Price: 1000
+     - Item: C_Giant_Fly_Wing
+       Price: 1000
+  - Tab: Permanent
+    Items:
+     - Item: Flame_Sprits_Armor_
+       Price: 1000
+     - Item: Water_Sprits_Armor_ 
+       Price: 1000
+     - Item: Wind_Sprits_Armor_
+       Price: 1000
+     - Item: Earth_Sprits_Armor_
+       Price: 1000
+     - Item: House_Auger_
+       Price: 1000
+     - Item: Sword_Breaker_
+       Price: 1000
+     - Item: Mail_Breaker_
+       Price: 1000
+     - Item: Mad_Bunny_K_
+       Price: 1000
+     - Item: Bloody_Knight_Shield__
+       Price: 1000
+  - Tab: Scrolls
+    Items:
+     - Item: Battle_Manual_X3
+       Price: 300
+     - Item: HE_Battle_Manual
+       Price: 200
+  - Tab: Consumables
+    Items:
+     - Item: Comp_Trans_Scroll
+       Price: 10
+     - Item: Matk_Trans_Scroll
+       Price: 10
+     - Item: Ratk_Trans_Scroll
+       Price: 10
+     - Item: Aspd_Trans_Scroll
+       Price: 10
+     - Item: Blessing_10_Scroll
+       Price: 10
+     - Item: Blessing_10_Scroll_Box
+       Price: 10
+     - Item: Inc_Agi_10_Scroll
+       Price: 10
+     - Item: Inc_Agi_10_Scroll_Box
+       Price: 10
+     - Item: Aspersio_5_Scroll
+       Price: 10
+     - Item: F_Aspersio_5_Scroll_Box
+       Price: 10
+     - Item: Insurance
+       Price: 10
+     - Item: Insurance_Package
+       Price: 10
+     - Item: Kafra_Card
+       Price: 10
+     - Item: Kafra_Card_Box30
+       Price: 10
+     - Item: Battle_Manual
+       Price: 10
+     - Item: Battle_Manual_Box
+       Price: 10
+     - Item: Bubble_Gum
+       Price: 10
+     - Item: Bubble_Gum_Box
+       Price: 10
+     - Item: Guyak_Pudding
+       Price: 10
+     - Item: Guyak_Pudding_20_Box
+       Price: 10
+     - Item: Abrasive
+       Price: 10
+     - Item: F_Abrasive_Box5
+       Price: 10
+     - Item: DEF_Scroll_Box
+       Price: 10
+     - Item: Mental_Potion20_Box
+       Price: 10
+     - Item: Small_Life_Potion_Box
+       Price: 10
+     - Item: ASPD_Potion_Box10
+       Price: 10
+     - Item: Red_Booster_Box20
+       Price: 10
+     - Item: Limit_Power_Booster_Box
+       Price: 10
+     - Item: A_Infinity_Box
+       Price: 10
+     - Item: Tyr_Blessing_Box20
+       Price: 10
+     - Item: Almighty_Box2
+       Price: 10
+  - Tab: Other
+    Items:
+     - Item: Inventory_Ex_Evt
+       Price: 100
+     - Item: Insurance
+       Price: 5
+Footer:
+  Imports:
+    - Path: db/import/item_cash.yml
