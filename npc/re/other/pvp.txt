@@ -1,0 +1,426 @@
+//===== rAthena Script ======================================= 
+//= PvP NPCs
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= PvP NPCs that are found in the Inns in major cities.
+//= Includes Yoyo Mode, Nightmare Mode, and Event Mode.
+//===== Additional Comments: ================================= 
+//= 1.0 First version, Renewal.
+//============================================================
+
+// PVP Warpers
+//============================================================ 
+pvp_y_room,30,85,4	script	Fight Square Reception#1	105,{ //5,5
+	callfunc "F_PVP_FSRS",50,69;
+	end;
+
+OnInit:
+	waitingroom "LV 50 ~ LV 69",0;
+	end;
+}
+
+pvp_y_room,38,85,4	script	Fight Square Reception#2	105,{ //5,5
+	callfunc "F_PVP_FSRS",70,89;
+	end;
+
+OnInit:
+	waitingroom "LV 70 ~ LV 89",0;
+	end;
+}
+
+pvp_y_room,46,85,4	script	Fight Square Reception#3	105,{ //5,5
+	callfunc "F_PVP_FSRS",90,99;
+	end;
+
+OnInit:
+	waitingroom "LV 90 ~ LV 99",0;
+	end;
+}
+
+pvp_y_room,54,85,4	script	Fight Square Reception#8	105,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+pvp_y_room,62,85,4	script	Fight Square Reception#4	105,{
+	//if (ADVJOB > 0) {
+	if (Upper == 1) {
+		mes "[PVP Fight Square Reception Staff]";
+		mes "You have been transcended.";
+		mes "You are not allowed to enter.";
+		close;
+	}
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Normal Jobs Only",0;
+	end;
+}
+
+pvp_y_room,70,85,4	script	Fight Square Reception#5	105,{
+	//if (ADVJOB == 0) {
+	if (Upper != 1) {
+		mes "[PVP Fight Square Reception Staff]";
+		mes "You have not transcended.";
+		mes "You are not allowed to enter.";
+		close;
+	}
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Trans Jobs Only",0;
+	end;
+}
+
+pvp_n_room,86,85,4	script	Fight Square Reception#n	105,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+amatsu,120,150,4	script	PvP Warper#ama_castle	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+amatsu,220,160,6	script	PvP Warper#ama_well	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+amatsu,190,91,6	script	PvP Warper#ama_ship	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+alberta,33,244,4	script	PvP Warper#alberta_top	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+alberta,107,59,4	script	PvP Warper#alberta_bot	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+aldebaran,146,113,4	script	PvP Warper#ald	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+ayothaya,213,256,4	script	PvP Warper#ayo	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+prontera,34,199,4	script	PvP Warper#prt_left	4_m_rusknight,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+prontera,161,192,4	script	PvP Warper#prt_mid	4_m_rusknight,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+prontera,271,210,6	script	PvP Warper#prt_right	4_m_rusknight,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+prt_monk,185,214,4	script	PvP Warper#prtmk	8w_soldier,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+comodo,201,147,4	script	PvP Warper#cmd	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+sp_cor,169,125,4	script	PvP Warper#cor	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+dicastes01,204,101,4	script	PvP Warper#dic_bot	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+einbech,177,112,4	script	PvP Warper#einbech	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+izlu2dun,115,61,4	script	PvP Warper#baylan	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+kh_vila,70,22,6	script	PvP Warper#khv	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+yuno,276,233,6	script	PvP Warper#yuno_top	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+yuno,142,178,6	script	PvP Warper#yuno_mid	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+yuno,332,108,4	script	PvP Warper#yuno_right	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+payon,177,223,4	script	PvP Warper#pay_top	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+payon,181,91,4	script	PvP Warper#pay_bot	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+pay_arche,45,122,6	script	PvP Warper#pay_arche	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+gef_tower,57,155,4	script	PvP Warper#gef_tower	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+geffen,207,126,4	script	PvP Warper#gef_right	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+geffen,130,70,4	script	PvP Warper#gef_bot	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+gonryun,166,117,4	script	PvP Warper#gon_mid	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+icecastle,180,205,6	script	PvP Warper#icecastle	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+lasagna,164,145,6	script	PvP Warper#lasagna	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+lighthalzen,167,90,4	script	PvP Warper#lighthalzen_bot	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+louyang,109,216,4	script	PvP Warper#louyang_left	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+malangdo,121,181,6	script	PvP Warper#malangdo	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+morocc,152,249,6	script	PvP Warper#morocc_top	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+morocc,283,196,4	script	PvP Warper#morocc_right	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+morocc,151,88,6	script	PvP Warper#morocc_bot	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+rachel,122,103,4	script	PvP Warper#rachel	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
+
+veins,193,116,6	script	PvP Warper#veins_bot	655,{
+	callfunc "F_PVP_FSRS";
+	end;
+
+OnInit:
+	waitingroom "Free for all",0;
+	end;
+}
