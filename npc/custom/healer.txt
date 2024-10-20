@@ -1,0 +1,189 @@
+//===== rAthena Script =======================================
+//= Healer
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Basic healer script.
+//===== Additional Comments: =================================
+//= 1.0 Initial script.
+//= 1.1 Aligned coordinates with @go.
+//============================================================
+
+-	script	Healer	-1,{
+
+	.@Price = 0;	// Zeny required for heal
+	.@Buffs = 1;	// Also buff players? (1: yes / 0: no)
+	.@Delay = 3;	// Heal delay, in seconds
+
+	if (@HD > gettimetick(2))
+		end;
+	if (.@Price) {
+		message strcharinfo(0), "Healing costs " + callfunc("F_InsertComma",.@Price) + " Zeny.";
+		if (Zeny < .@Price)
+			end;
+		if (select("^0055FFHeal^000000:^777777Cancel^000000") == 2)
+			end;
+		Zeny -= .@Price;
+	}
+	specialeffect2 EF_HEAL2;percentheal 100,100;healap 200;
+	if (.@Buffs) {
+		specialeffect2 EF_INCAGILITY;
+		sc_start SC_INCREASEAGI,240000,10;
+		specialeffect2 EF_BLESSING;
+		sc_start SC_BLESSING,240000,10;
+		//repairall
+				if( getbrokenid(1) ) repairall;
+getinventorylist;
+while( .@i < @inventorylist_count ){
+	if ( !@inventorylist_identify[.@i] ){
+		delitem2 @inventorylist_id[.@i],1,0,0,0,0,0,0,0;
+		getitem @inventorylist_id[.@i],1;
+	}
+	.@i++;
+}
+	switch (BaseJob) {
+		case Job_Alchemist:		.@s = 445; break;
+		case Job_Monk:			.@s = 447; break;
+		case Job_Star_Gladiator:.@s = 448; break;
+		case Job_Sage:			.@s = 449; break;
+		case Job_Crusader:		.@s = 450; break;
+		case Job_SuperNovice:	.@s = 451; break;
+		case Job_Knight:		.@s = 452; break;
+		case Job_Wizard:		.@s = 453; break;
+		case Job_Priest:		.@s = 454; break;
+		case Job_Bard:
+		case Job_Dancer:		.@s = 455; break;
+		case Job_Rogue:			.@s = 456; break;
+		case Job_Assassin:		.@s = 457; break;
+		case Job_Blacksmith:	.@s = 458; break;
+		case Job_Hunter:		.@s = 460; break;
+		case Job_Soul_Linker:	.@s = 461; break;
+		default:
+			if (Upper == 1 && BaseLevel < 70)
+				.@s = 494;
+	}
+	if (.@s) {
+		sc_start4 SC_SPIRIT, 350000, 5, .@s, 0, 0;
+		specialeffect2 503;
+	}
+                atcommand "@identifyall";
+					sc_end SC_FREEZING;
+					sc_end SC_POISON;
+					sc_end SC_CURSE;
+					sc_end SC_SILENCE;
+					sc_end SC_CONFUSION;
+					sc_end SC_BLIND;
+					sc_end SC_BLOODING;
+					sc_end SC_DPOISON;
+					sc_end SC_FEAR;
+					sc_end SC_COLD;
+					sc_end SC_BURNING;
+					sc_end SC_STRIPWEAPON;
+					sc_end SC_STRIPSHIELD;
+					sc_end SC_STRIPARMOR;
+					sc_end SC_STRIPHELM;
+					sc_end SC_STRIPHELM;
+					sc_end SC_STRIPACCESSARY;
+					sc_end SC_PROPERTYUNDEAD;
+					sc_end SC_ORCISH;
+					sc_end SC_BERSERK;
+					sc_end SC_SKE;
+					sc_end SC_SWOO;
+					sc_end SC_SKA;
+					sc_end SC_STEELBODY;
+					sc_end SC_GLOOMYDAY;
+					sc_end SC_IGNORANCE;
+					sc_end SC_GROOMY;
+					sc_end SC_ENERVATION;
+					sc_end SC_LAZINESS;
+					sc_end SC_UNLUCKY;
+	}
+	if (.@Delay)
+		@HD = gettimetick(2) + .@Delay;
+	end;
+}
+
+
+// Duplicates
+//============================================================
+alberta,25,240,6	duplicate(Healer)	Healer#alb_top	4_F_NURSE
+alberta,113,53,6	duplicate(Healer)	Healer#alb_bot	4_F_NURSE
+aldebaran,135,118,6	duplicate(Healer)	Healer#alde	4_F_NURSE
+amatsu,107,164,6	duplicate(Healer)	Healer#ama_Castle	4_F_NURSE
+amatsu,230,235,4	duplicate(Healer)	Healer#ama_sakura_tree	4_F_NURSE
+amatsu,228,162,4	duplicate(Healer)	Healer#amatsu_well	4_F_NURSE
+amatsu,200,79,4	duplicate(Healer)	Healer#amatsu_ship	4_F_NURSE
+ayothaya,214,262,4	duplicate(Healer)	Healer#ayo_top	4_F_NURSE
+ayothaya,206,169,6	duplicate(Healer)	Healer#ayo_right	4_F_NURSE
+ayothaya,155,120,4	duplicate(Healer)	Healer#ayo_bot	4_F_NURSE
+comodo,184,158,6	duplicate(Healer)	Healer#com	4_F_NURSE
+cmd_fild07,246,122,6	duplicate(Healer)	Healer#cmd_right	4_F_NURSE
+einbech,57,36,6	duplicate(Healer)	Healer#einbe	4_F_NURSE
+einbech,179,127,4	duplicate(Healer)	Healer#einbe_mid	4_F_NURSE
+einbroch,57,202,6	duplicate(Healer)	Healer#einbr	4_F_NURSE
+geffen,129,196,4	duplicate(Healer)	Healer#gef_top	4_F_NURSE
+gef_tower,46,155,6	duplicate(Healer)	Healer#gef_tower	4_F_NURSE
+geffen,205,127,4	duplicate(Healer)	Healer#gef_right	4_F_NURSE
+geffen,124,65,4	duplicate(Healer)	Healer#gef_bot	4_F_NURSE
+gonryun,156,122,6	duplicate(Healer)	Healer#gon	4_F_NURSE
+hugel,89,150,6	duplicate(Healer)	Healer#hug	4_F_NURSE
+hero_lb,136,146,6	duplicate(Healer)	Healer#hero	4_F_NURSE
+icecastle,182,220,6	duplicate(Healer)	Healer#icecastle	4_F_NURSE
+izlude,121,150,6	duplicate(Healer)	Healer#izl	4_F_NURSE	//Pre-RE: (125,118)
+izlu2dun,98,66,6	duplicate(Healer)	Healer#izl2dun	4_F_NURSE
+jawaii,250,139,4	duplicate(Healer)	Healer#jaw	4_F_NURSE
+kh_vila,73,22,6	duplicate(Healer)	Healer#khv	4_F_NURSE
+lasagna,175,156,4	duplicate(Healer)	Healer#lasagna	4_F_NURSE
+lighthalzen,152,100,6	duplicate(Healer)	Healer#lhz	4_F_NURSE
+louyang,97,220,4	duplicate(Healer)	Healer#lou_left	4_F_NURSE
+louyang,226,103,4	duplicate(Healer)	Healer#lou_mid	4_F_NURSE
+louyang,319,73,4	duplicate(Healer)	Healer#lou_right	4_F_NURSE
+manuk,272,144,6	duplicate(Healer)	Healer#man	4_F_NURSE
+mid_camp,203,289,6	duplicate(Healer)	Healer#mid	4_F_NURSE
+moc_ruins,72,164,4	duplicate(Healer)	Healer#moc_ruins_top	4_F_NURSE
+morocc,171,257,4	duplicate(Healer)	Healer#moc_top	4_F_NURSE
+morocc,279,211,6	duplicate(Healer)	Healer#moc_right	4_F_NURSE
+morocc,169,101,4	duplicate(Healer)	Healer#moc_bot	4_F_NURSE
+moscovia,220,191,4	duplicate(Healer)	Healer#mos	4_F_NURSE
+niflheim,212,182,5	duplicate(Healer)	Healer#nif	4_F_NURSE
+nif_in,30,178,6	duplicate(Healer)	Healer#nif1	4_F_NURSE
+payon,169,226,4	duplicate(Healer)	Healer#pay_top	4_F_NURSE
+payon,179,106,4	duplicate(Healer)	Healer#pay_bot	4_F_NURSE
+pay_arche,57,126,4	duplicate(Healer)	Healer#pay_arche	4_F_NURSE
+prontera,158,191,4	duplicate(Healer)	Healer#prt_mid	4_F_NURSE
+prontera,34,212,4	duplicate(Healer)	Healer#prt_left	4_F_NURSE
+prontera,275,198,6	duplicate(Healer)	Healer#prt_right	4_F_NURSE
+prt_fild08,147,368,6	duplicate(Healer)	Healer#prtf8	4_F_NURSE
+prt_monk,181,200,4	duplicate(Healer)	Healer#prtmk	4_F_NURSE
+rachel,125,116,6	duplicate(Healer)	Healer#rac	4_F_NURSE
+splendide,201,153,4	duplicate(Healer)	Healer#spl	909
+sp_cor,153,125,6	duplicate(Healer)	Healer#cor	4_F_NURSE
+thor_camp,249,73,4	duplicate(Healer)	Healer#thor	4_F_NURSE
+umbala,105,148,3	duplicate(Healer)	Healer#umb	4_F_NURSE
+veins,199,130,4	duplicate(Healer)	Healer#ve	4_F_NURSE
+xmas,143,136,4	duplicate(Healer)	Healer#xmas	4_F_NURSE
+yuno,284,227,4	duplicate(Healer)	Healer#yuno_top	4_F_NURSE
+yuno,149,184,4	duplicate(Healer)	Healer#yuno_mid	4_F_NURSE
+yuno,320,108,6	duplicate(Healer)	Healer#yuno_right	4_F_NURSE
+yuno,164,45,4	duplicate(Healer)	Healer#yuno_bot	4_F_NURSE
+
+// Duplicates (Renewal)
+//============================================================
+brasilis,114,316,4	duplicate(Healer)	Healer#bra_top	4_F_NURSE
+brasilis,194,221,6	duplicate(Healer)	Healer#bra_mid	4_F_NURSE
+brasilis,117,74,6	duplicate(Healer)	Healer#bra_bot	4_F_NURSE
+dewata,195,187,4	duplicate(Healer)	Healer#dew	4_F_NURSE
+dicastes01,201,194,4	duplicate(Healer)	Healer#dic	4_F_NURSE
+dicastes01,206,112,4	duplicate(Healer)	Healer#dic_bot	4_F_NURSE
+dicastes02,114,164,6	duplicate(Healer)	Healer#dic02	4_F_NURSE
+ecl_in01,45,60,4	duplicate(Healer)	Healer#ecl	4_F_NURSE
+malangdo,139,187,4	duplicate(Healer)	Healer#mal	4_F_NURSE
+malaya,227,204,6	duplicate(Healer)	Healer#ma	4_F_NURSE
+mora,55,152,4	duplicate(Healer)	Healer#mora	4_F_NURSE
+que_temsky,50,138,4	duplicate(Healer)	Healer#sky	4_F_NURSE
+harboro1,279,193,6	duplicate(Healer)	Healer#harb	4_F_NURSE
+ra_temple,162,130,6	duplicate(Healer)	Healer#ra	4_F_NURSE

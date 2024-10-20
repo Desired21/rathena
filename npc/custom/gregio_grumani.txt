@@ -1,0 +1,181 @@
+mal_in01,24,121,6	script	Gregio_Grumani#eventhat	4_CAT_SAILOR5,{
+	
+
+// These 4th slot Enchants are included in Enchant Stone Box 4-21
+//IDLoc
+//25058,	Upper
+//25059, , Middle
+//25136, , Middle
+//25137, , Lower
+//25138, , Middle
+//25176, , Middle
+//25177, , Middle
+//25178, , Middle
+//25224, , Middle
+//25225, , Middle
+//25226, , Lower
+//25205, , Lower
+
+mes "[Gregio Grumani]";
+mes "Hello! I can enchant your costumes with special visual effects.";
+mes "Do you have an enchant stone with you?";
+next;
+switch(select("Yes, I do.:No, I don't.")) {
+case 1:
+       mes "[Gregio Grumani]";
+       mes "Great! Please hand me the costume and the enchant stone.";
+       next;
+       callfunc "select_enchant_stone";
+       break;
+    case 2:
+        mes "[Gregio]";
+        mes "Alright, come back when you have the items!";
+        close;
+        break;
+}
+}
+function	script	select_enchant_stone	{
+    mes "[Gregio Grumani]";
+    mes	"Which enchant stone would you like to use?";
+    next;
+    switch(select("Twinkle Effect:Ghost Effect:Electic Effect:Green Flare Effect:Shrink Effect (Mid):Blue Aura Effect:Shadow Effect:Pink Glow Effect:White Body Effect:Crimson Wave:Water Field:Shrink Effect (Lower)")) {
+        case 1:
+            callfunc "enchant_costume", 25058;
+            break;
+        case 2:
+            callfunc "enchant_costume", 25059;
+            break;
+        case 3:
+            callfunc "enchant_costume", 25136;
+            break;
+        case 4:
+            callfunc "enchant_costume", 25137;
+            break;
+        case 5:
+            callfunc "enchant_costume", 25138;
+            break;
+        case 6:
+            callfunc "enchant_costume", 25176;
+            break;
+        case 7:
+            callfunc "enchant_costume", 25177;
+            break;
+        case 8:
+            callfunc "enchant_costume", 25178;
+            break;
+        case 9:
+            callfunc "enchant_costume", 25224;
+            break;
+        case 10:
+            callfunc "enchant_costume", 25225;
+            break;
+        case 11:
+            callfunc "enchant_costume", 25226;
+            break;
+        case 12:
+            callfunc "enchant_costume", 25205;
+            break;
+    }
+}
+
+function	script	enchant_costume	{
+     .@stone_id = getarg(0);
+
+	mes "[Gregio]";
+    mes "Which costume do you want to enchant?";
+	next;
+	switch(select("Top:Middle:Lower:Garment")){
+		case 1:
+			.@garment_costume_id = getequipid(EQI_COSTUME_HEAD_TOP);
+			break;
+		case 2:
+			.@garment_costume_id = getequipid(EQI_COSTUME_HEAD_MID);
+			break;
+		case 3:
+			.@garment_costume_id = getequipid(EQI_COSTUME_HEAD_LOW);
+			break;
+		case 4:
+			.@garment_costume_id = getequipid(EQI_COSTUME_GARMENT);
+			break;
+    }
+    
+    if (countitem(.@stone_id) < 1) {
+        mes "[Gregio Grumani]";
+        mes "It seems you don't have the required item.";
+        close;
+    }
+    
+    if (.@garment_costume_id <= 0) {
+        mes "[Gregio Grumani]";
+        mes "It seems you are not wearing a garment costume.";
+        close;
+    }
+    else{
+    delitem .@stone_id, 1; // Remove the selected garment effect stone
+    
+   // Map stone IDs to effect codes
+   switch (.@stone_id) {
+        case 25058:
+            .@effect_code = 29041;
+            break;
+        case 25059:
+            .@effect_code = 29040;
+            break;
+        case 25136:
+            .@effect_code = 29142;
+            break;
+        case 25137:
+            .@effect_code = 29143;
+            break;
+        case 25138:
+            .@effect_code = 29144;
+            break;
+        case 25176:
+            .@effect_code = 29160;
+            break;
+        case 25177:
+            .@effect_code = 29162;
+            break;
+        case 25178:
+            .@effect_code = 25161;
+            break;
+        case 25224:
+            .@effect_code = 29224;
+            break;
+        case 25225:
+            .@effect_code = 29226;
+            break;
+        case 25226:
+            .@effect_code = 29225;
+            break;
+        case 25205:
+            .@effect_code = 29144;
+            break;
+        default:
+            mes "[Gregio Grumani]";
+            mes "Invalid stone ID.";
+            close;
+    }
+    
+    // Apply the visual enchantment to the garment costume
+    mes "[Gregio Grumani]";
+    mes "Enchanting your costume now...";
+    
+   
+
+    unequip .@garment_costume_id; 
+    delitem .@garment_costume_id, 1;
+    getitem2 .@garment_costume_id,1,1,0,0,0,.@effect_code,0,0;
+    equip .@garment_costume_id;
+
+    // Inform the player
+    mes "[Gregio Grumani]";
+    mes "The visual effect has been permanently applied to your costume!";
+    close;
+    
+    mes "Success! You costume has been enchanted with a new visual effect.";
+    close;
+}
+}
+
+
