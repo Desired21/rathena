@@ -5951,6 +5951,10 @@ const char *npc_get_script_event_name(int npce_index)
 		return script_config.kill_pc_event_name;
 	case NPCE_KILLNPC:
 		return script_config.kill_mob_event_name;
+	case NPCE_SKILLUSE:
+		return script_config.useskill_event_name;
+    case NPCE_PCATK:
+		return script_config.attack_pc_event_name;
 	default:
 		ShowError("npc_get_script_event_name: npce_index is outside the array limits: %d (max: %d).\n", npce_index, NPCE_MAX);
 		return nullptr;
@@ -5960,7 +5964,7 @@ const char *npc_get_script_event_name(int npce_index)
 void npc_read_event_script(void)
 {
 	int i;
-
+	
 	script_event.clear();
 
 	for (i = 0; i < NPCE_MAX; i++)

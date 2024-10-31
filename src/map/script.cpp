@@ -267,6 +267,8 @@ struct Script_Config script_config = {
 	"OnPCLoadMapEvent", //loadmap_event_name
 	"OnPCBaseLvUpEvent", //baselvup_event_name
 	"OnPCJobLvUpEvent", //joblvup_event_name
+	"OnPCUseSkillEvent", //useskill_event_name
+	"OnPCAttackEvent",	 // attack_pc_event_name
 	// NPC related
 	"OnTouch_",	//ontouch_event_name (runs on first visible char to enter area, picks another char if the first char leaves)
 	"OnTouch",	//ontouch2_event_name (run whenever a char walks into the OnTouch area)
@@ -28066,6 +28068,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(navigateto,"s???????"),
 	BUILDIN_DEF(getguildalliance,"ii"),
 	BUILDIN_DEF(adopt,"vv"),
+	BUILDIN_DEF(getskillname, "v"),
 	BUILDIN_DEF(getexp2,"ii?"),
 	BUILDIN_DEF(recalculatestat,""),
 	BUILDIN_DEF(hateffect,"ii"),

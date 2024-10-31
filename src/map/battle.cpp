@@ -28,6 +28,7 @@
 #include "map.hpp"
 #include "mercenary.hpp"
 #include "mob.hpp"
+#include "npc.hpp"
 #include "party.hpp"
 #include "path.hpp"
 #include "pc.hpp"
@@ -6910,6 +6911,26 @@ struct block_list *battle_check_devotion(struct block_list *bl) {
 	return d_bl;
 }
 
+void do_battle_events(struct block_list* src, struct block_list* target, int64 damage) {
+	struct map_session_data* sd;
+	struct mob_data* md;
+	sd = BL_CAST(BL_PC, src);
+	md = BL_CAST(BL_MOB, target);
+	nullpo_retv(src);
+	nullpo_retv(target);
+	// Damage event
+	if (sd) {
+		pc_setreg(sd, add_str("@damage"), damage);
+		pc_setreg(sd, add_str("@damagegid"), target->id);
+		if (md)
+			pc_setreg(sd, add_str("@damagerid"), md->bl.id);
+		else
+			pc_setreg(sd, add_str("@damagerid"), 0);
+
+		npc_script_event(*sd, NPCE_PCATK);
+	}
+}
+
 /*==========================================
  * BG/GvG attack modifiers
  *------------------------------------------
@@ -6950,6 +6971,7 @@ static void battle_calc_attack_gvg_bg(struct Damage* wd, struct block_list *src,
 				wd->damage=battle_calc_gvg_damage(src,target,wd->damage,skill_id,wd->flag);
 			else if( mapdata->getMapFlag(MF_BATTLEGROUND) )
 				wd->damage=battle_calc_bg_damage(src,target,wd->damage,skill_id,wd->flag);
+			do_battle_events(src, target, wd->damage); //	OnPcAttackEvent [Mastagoon]
 		}
 		else if(!wd->damage) {
 			wd->damage2 = battle_calc_damage(src,target,wd,wd->damage2,skill_id,skill_lv);
@@ -6957,6 +6979,7 @@ static void battle_calc_attack_gvg_bg(struct Damage* wd, struct block_list *src,
 				wd->damage2 = battle_calc_gvg_damage(src,target,wd->damage2,skill_id,wd->flag);
 			else if( mapdata->getMapFlag(MF_BATTLEGROUND) )
 				wd->damage2 = battle_calc_bg_damage(src,target,wd->damage2,skill_id,wd->flag);
+			do_battle_events(src, target, wd->damage2); //	OnPcAttackEvent [Mastagoon]
 		}
 		else {
 			wd->damage = battle_calc_damage(src, target, wd, wd->damage, skill_id, skill_lv);
@@ -6970,6 +6993,8 @@ static void battle_calc_attack_gvg_bg(struct Damage* wd, struct block_list *src,
 				wd->damage2 = battle_calc_bg_damage(src, target, wd->damage2, skill_id, wd->flag);
 			}
 			if(wd->damage > 1 && wd->damage2 < 1) wd->damage2 = 1;
+			wd->damage-=wd->damage2;
+			do_battle_events(src, target, wd->damage); //	OnPcAttackEvent [Mastagoon]
 		}
 	}
 }
@@ -7509,16 +7534,16 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 
 		// Res reduces physical damage by a percentage and
 		// is calculated before DEF and other reductions.
-		// All skills that use the simple defense formula (damage substracted by DEF+DEF2) ignore Res
+		// All skills that use the simple defense formula (damage subtracted by DEF+DEF2) ignore Res
 		// TODO: Res formula probably should be: (2000+x)/(2000+5x), but with the reduction rounded down
 		if ((wd.damage + wd.damage2) && tstatus->res > 0 && !nk[NK_SIMPLEDEFENSE]) {
 			short res = tstatus->res;
-			short ignore_res = 0;// Value used as a percentage.
+			short ignore_res = 0; // Value used as a percentage.
 
-			if (sd)
+			if (sd) // Check if the attacker is a player and apply ignore_res bonuses.
 				ignore_res += sd->indexed_bonus.ignore_res_by_race[tstatus->race] + sd->indexed_bonus.ignore_res_by_race[RC_ALL];
 
-			// Attacker status's that pierce Res.
+			// Attacker statuses that pierce Res.
 			if (sc) {
 				if (sc->getSCE(SC_A_TELUM))
 					ignore_res += sc->getSCE(SC_A_TELUM)->val2;
@@ -7531,11 +7556,26 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 			if (ignore_res > 0)
 				res -= res * ignore_res / 100;
 
-			// Apply damage reduction.
-			wd.damage = wd.damage * (5000 + res) / (5000 + 10 * res);
-			wd.damage2 = wd.damage2 * (5000 + res) / (5000 + 10 * res);
-		}
+			// Determine if the attacker is a player and what type of target it is
+			bool targetIsPlayer = (tstatus->race == RC_PLAYER_HUMAN || tstatus->race == RC_PLAYER_DORAM);
+			bool attackerIsPlayer = (sd != nullptr) && (sd->bl.type == BL_PC); // Use bl.type to check if attacker is a player
 
+			if (attackerIsPlayer && targetIsPlayer) {
+				// Player attacks another player: use the adjusted formula
+				if (res > 0) {
+					int64 capped_res = min(res, 1000LL); // Cap RES at 1000
+					int reduction_percent = min(capped_res * 90 / 1000, 90); // Max 90% reduction (as integer percentage)
+					wd.damage = wd.damage * (100 - reduction_percent) / 100;
+					wd.damage2 = wd.damage2 * (100 - reduction_percent) / 100;
+				}
+			}
+			else {
+				// In all other cases (player attacking monster or monster attacking player),
+				// apply the original formula (including monster vs. monster if needed)
+				wd.damage = wd.damage * (5000 + res) / (5000 + 10 * res);
+				wd.damage2 = wd.damage2 * (5000 + res) / (5000 + 10 * res);
+			}
+		}
 #else
 		// final attack bonuses that aren't affected by cards
 		battle_attack_sc_bonus(&wd, src, target, skill_id, skill_lv);
@@ -8775,30 +8815,44 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 		if (tsd && (i = pc_sub_skillatk_bonus(tsd, skill_id)))
 			ad.damage -= (int64)ad.damage*i/100;
 
-#ifdef RENEWAL
-		// MRes reduces magical damage by a percentage and
-		// is calculated before MDEF and other reductions.
-		// TODO: MRes formula probably should be: (2000+x)/(2000+5x), but with the reduction rounded down
-		if (ad.damage && tstatus->mres > 0) {
-			short mres = tstatus->mres;
-			short ignore_mres = 0;// Value used as percentage.
+    // MRes reduces magical damage by a percentage and
+    // is calculated before MDEF and other reductions.
+    if (ad.damage && tstatus->mres > 0) {
+        short mres = tstatus->mres;
+        short ignore_mres = 0; // Value used as a percentage.
 
-			if (sd)
-				ignore_mres += sd->indexed_bonus.ignore_mres_by_race[tstatus->race] + sd->indexed_bonus.ignore_mres_by_race[RC_ALL];
+        if (sd)
+            ignore_mres += sd->indexed_bonus.ignore_mres_by_race[tstatus->race] + sd->indexed_bonus.ignore_mres_by_race[RC_ALL];
 
-			// Attacker status's that pierce MRes.
-			if (sc && sc->getSCE(SC_A_VITA))
-				ignore_mres += sc->getSCE(SC_A_VITA)->val2;
+        // Attacker statuses that pierce MRes.
+        if (sc && sc->getSCE(SC_A_VITA))
+            ignore_mres += sc->getSCE(SC_A_VITA)->val2;
 
-			ignore_mres = min(ignore_mres, battle_config.max_res_mres_ignored);
+        ignore_mres = min(ignore_mres, battle_config.max_res_mres_ignored);
 
-			if (ignore_mres > 0)
-				mres -= mres * ignore_mres / 100;
+        if (ignore_mres > 0)
+            mres -= mres * ignore_mres / 100;
 
-			// Apply damage reduction.
-			ad.damage = ad.damage * (5000 + mres) / (5000 + 10 * mres);
+		// Check if the target's race is a player.
+		bool targetIsPlayer = (tstatus->race == RC_PLAYER_HUMAN || tstatus->race == RC_PLAYER_DORAM);
+
+		// Check if the attacker is a player by using sd->bl.type
+		bool attackerIsPlayer = (sd != nullptr) && (sd->bl.type == BL_PC);
+
+		if (mres > 0) {
+			if (attackerIsPlayer && targetIsPlayer) {
+				// Player attacks another player: use the adjusted formula
+				int capped_mres = min(mres, 1000); // Cap MRes at 1000
+				int reduction_percent = min(capped_mres * 90 / 1000, 90); // Max 90% reduction (as integer percentage)
+				ad.damage = ad.damage * (100 - reduction_percent) / 100;
+			}
+			else {
+				// In all other cases (player attacking monster or monster attacking player),
+				// apply the original formula (including monster vs. monster if needed)
+				ad.damage = ad.damage * (5000 + mres) / (5000 + 10 * mres);
+			}
 		}
-#endif
+    }
 
 		if(!flag.imdef){
 			defType mdef = tstatus->mdef;
@@ -8990,6 +9044,8 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 	// Skill damage adjustment
 	if ((skill_damage = battle_skill_damage(src,target,skill_id)) != 0)
 		MATK_ADDRATE(skill_damage);
+    
+	do_battle_events(src, target, ad.damage);
 
 	battle_absorb_damage(target, &ad);
 
@@ -9403,6 +9459,8 @@ struct Damage battle_calc_misc_attack(struct block_list *src,struct block_list *
 		md.damage += (int64)md.damage * skill_damage / 100;
 
 	battle_absorb_damage(target, &md);
+
+	do_battle_events(src, target, md.damage);
 
 	battle_do_reflect(BF_MISC,&md, src, target, skill_id, skill_lv); //WIP [lighta]
 

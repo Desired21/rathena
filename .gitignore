@@ -149,3 +149,5 @@ Thumbs.db
 
 # generated files
 generated
+src/map/battle_crash_bak.cpp
+src/map/battlebak.cpp

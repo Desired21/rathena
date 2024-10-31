@@ -12895,6 +12895,11 @@ void clif_parse_skill_toid( map_session_data* sd, uint16 skill_id, uint16 skill_
 
 	if( skill_lv )
 		unit_skilluse_id(&sd->bl, target_id, skill_id, skill_lv);
+	//Jezznar OnPCSkillUseEvent
+	pc_setreg(sd, (uint64)(add_str("@skillused_id")), skill_id);
+	pc_setreg(sd, (uint64)(add_str("@skillused_lv")), skill_lv);
+	npc_script_event(*sd, NPCE_SKILLUSE);
+	//Jezznar
 }
 
 
@@ -13000,6 +13005,11 @@ static void clif_parse_UseSkillToPosSub( int fd, map_session_data& sd, uint16 sk
 			unit_skilluse_pos(&sd.bl, x, y, skill_id,skill_lv);
 		}
 	}
+	//Jezznar OnPCSkillUseEvent
+	pc_setreg(&sd, (uint64)(add_str("@skillused_id")), skill_id);
+	pc_setreg(&sd, (uint64)(add_str("@skillused_lv")), skill_lv);
+	npc_script_event(sd, NPCE_SKILLUSE);
+	//Jezznar
 }
 
 
